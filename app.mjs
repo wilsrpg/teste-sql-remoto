@@ -12,6 +12,10 @@ servidor.use(cors({
 dotenvConfig();
 
 servidor.get('/', async (req, resp)=>{
+  resp.send('deu certo!');
+});
+
+servidor.get('/usuarios', async (req, resp)=>{
   if(!process.env.HOST || !process.env.USUARIO || !process.env.SENHA || !process.env.BANCO)
     return resp.json("Dados de conexão com o banco de dados incompletos.");
 

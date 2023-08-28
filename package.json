@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.mjs",
   "scripts": {
-    "dev": "node-dev app.mjs"
+    "dev": "node-dev app.mjs",
+    "start": "node app.mjs"
   },
   "author": "",
   "license": "ISC",

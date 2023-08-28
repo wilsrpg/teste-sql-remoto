@@ -11,20 +11,25 @@ servidor.use(cors({
 
 dotenvConfig();
 
-const connection = mysql.createConnection({
-  host: process.env.HOST,
-  //port: process.env.PORTA,
-  user: process.env.USUARIO,
-  password: process.env.SENHA,
-  database: process.env.BANCO
-});
-
 servidor.get('/', async (req, resp)=>{
+  if(!process.env.HOST || !process.env.USUARIO || !process.env.SENHA || !process.env.BANCO)
+    return resp.json("Dados de conexão com o banco de dados incompletos.");
+
+  const connection = mysql.createConnection({
+    host: process.env.HOST,
+    //port: process.env.PORTA,
+    user: process.env.USUARIO,
+    password: process.env.SENHA,
+    database: process.env.BANCO
+  });
+
+  let resultado;
   connection.connect(async (err) => {
     if (err) throw err;
-    console.log('Connected to the remote database!');
-    connection.query('SELECT * FROM `teste`;',(e,r,campos)=>{
-      console.log(r[0].usuario);
+    //console.log('Connected to the remote database!');
+    connection.query('SELECT * FROM `teste`;', (e,r,campos)=>{
+      //console.log(r[0].usuario);
+      resultado = r;
       //console.log(campos);
       //exit();
     });
@@ -40,7 +45,7 @@ servidor.get('/', async (req, resp)=>{
 	//	GROUP BY Jogos.id;`
 	//);
 	//jogos.map(jogo=>jogo._count = {anuncios: jogosQtde.find(j=>j.id==jogo.id).qtdeAnuncios});
-	return resp.json("deu");
+	return resp.json(resultado);
 })
 
 servidor.listen(

@@ -1,58 +1,47 @@
 import express from 'express'
 import cors from 'cors'
 import mysql from 'mysql2'
-import { config as dotenvConfig } from 'dotenv';
+//import { config as dotenvConfig } from 'dotenv';
+
+//dotenvConfig();
 
 const servidor = express();
 servidor.use(express.json());
 servidor.use(cors({
 	//origin: 'http://meudominio.com'
 }));
-
-dotenvConfig();
+servidor.use(express.urlencoded({extended: false}));
+//servidor.use(express.static('.'));
 
 servidor.get('/', async (req, resp)=>{
-  resp.send('deu certo!');
+  resp.sendFile('index.html', {root: '.'});
 });
 
-servidor.get('/usuarios', async (req, resp)=>{
-  if(!process.env.HOST || !process.env.USUARIO || !process.env.SENHA || !process.env.BANCO)
-    return resp.json("Dados de conexão com o banco de dados incompletos.");
-
-  const connection = mysql.createConnection({
-    host: process.env.HOST,
-    //port: process.env.PORTA,
-    user: process.env.USUARIO,
-    password: process.env.SENHA,
-    database: process.env.BANCO
+servidor.post('/', async (req, resp) => {
+  const con = mysql.createConnection({
+    host: req.body.servidor,
+    database: req.body.banco,
+    user: req.body.usuario,
+    password: req.body.senha
   });
 
-  let resultado;
-  connection.connect(async (err) => {
-    if (err) throw err;
-    //console.log('Connected to the remote database!');
-    connection.query('SELECT * FROM `teste`;', (e,r,campos)=>{
-      //console.log(r[0].usuario);
-      resultado = r;
-      //console.log(campos);
-      //exit();
-    });
+  const desconectado = await new Promise(resolve=>{
+    con.ping(erro=>resolve(erro));
   });
+  if(desconectado)
+    return resp.sendFile('erro.html', {root: '.'});
+  
+  //con.connect(async (erro) => {
+  //  if (erro)
+  //    throw erro;
+  //  con.query('SELECT * FROM `teste`;', (e,resultado,campos)=>{
+  //    //console.log(resultado);
+  //    return resolve(resultado[0].usuario);
+  //  });
+  //});
+  //console.log(usuario);
 
-	//const db = await abrirBanco;
-	//const jogos = await db.all(`SELECT * FROM Jogos;`);
-	//console.log("GET jogos, qtde="+jogos.length+", ip="+req.ip);
-	//const jogosQtde = await db.all(
-	//	`SELECT Jogos.id, COUNT(Anuncios.jogoId) as qtdeAnuncios
-	//	FROM Jogos LEFT JOIN Anuncios
-	//	ON Jogos.id=Anuncios.jogoId
-	//	GROUP BY Jogos.id;`
-	//);
-	//jogos.map(jogo=>jogo._count = {anuncios: jogosQtde.find(j=>j.id==jogo.id).qtdeAnuncios});
-	return resp.json(resultado);
-})
+  resp.sendFile('sucesso.html', {root: '.'});
+});
 
-servidor.listen(
-  process.env.PORTA_DO_SERVIDOR,
-  ()=>console.log("iniciou server, ouvindo porta "+process.env.PORTA_DO_SERVIDOR)
-);
+servidor.listen(3333, ()=>console.log('iniciou server, ouvindo porta 3333'));

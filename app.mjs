@@ -45,7 +45,6 @@ servidor.post('/', async (req, resp) => {
 });
 
 servidor.get('/usuarios', async (req, resp)=>{
-  console.log(req.ip);
   resp.json({usuarios: [{nome: 'Nome1'},{nome: 'Nome2'},{nome: 'Nome3'}]});
 });
 

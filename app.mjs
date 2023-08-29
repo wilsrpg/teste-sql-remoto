@@ -44,4 +44,9 @@ servidor.post('/', async (req, resp) => {
   resp.sendFile('sucesso.html', {root: '.'});
 });
 
+servidor.get('/usuarios', async (req, resp)=>{
+  console.log(req.ip);
+  resp.json({usuarios: [{nome: 'Nome1'},{nome: 'Nome2'},{nome: 'Nome3'}]});
+});
+
 servidor.listen(3333, ()=>console.log('iniciou server, ouvindo porta 3333'));

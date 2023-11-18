@@ -7,9 +7,18 @@
     <title>Conectar com um banco de dados</title>
   </head>
   <body>
-    <form method="POST">
+    <h2>Testar conexão com banco de dados online</h2>
+    <p>MySQL</p>
+    <form method="POST" action="/mysql">
       <input name="servidor" placeholder="Servidor" required>
       <input name="banco" placeholder="Banco de dados" required>
+      <input name="usuario" placeholder="Usuário" required>
+      <input name="senha" placeholder="Senha" type="password" required>
+      <input type="submit" value="Conectar">
+    </form>
+    <p>MongoDB</p>
+    <form method="POST" action="/mongodb">
+      <input name="servidor" placeholder="Servidor" required>
       <input name="usuario" placeholder="Usuário" required>
       <input name="senha" placeholder="Senha" type="password" required>
       <input type="submit" value="Conectar">

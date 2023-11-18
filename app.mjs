@@ -16,8 +16,7 @@ servidor.use(express.urlencoded({extended: false}));
 
 servidor.get('/teste', async (req, resp)=>{
   //resp.sendFile('index.html', {root: '.'});
-  fetch("https://wilsrpg.cyclic.cloud"
-  , {
+  fetch("https://wilsrpg.cyclic.cloud", {
     "headers": {
       "Authorization": `Basic ${btoa('wilsrpg@cyclic:BoraCyclic')}`,
     },

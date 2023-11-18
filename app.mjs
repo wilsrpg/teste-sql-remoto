@@ -18,6 +18,10 @@ servidor.get('/', async (req, resp)=>{
   resp.sendFile('index.html', {root: '.'});
 });
 
+servidor.get('/googlec36f80c6f63a5f05.html', async (req, resp)=>{
+  resp.sendFile('googlec36f80c6f63a5f05.html', {root: '.'});
+});
+
 servidor.post('/mysql', async (req, resp) => {
   const con = mysql.createConnection({
     host: req.body.servidor.slice(0,req.body.servidor.search(':')),

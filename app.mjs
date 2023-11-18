@@ -15,12 +15,13 @@ servidor.use(express.urlencoded({extended: false}));
 //servidor.use(express.static('.'));
 
 servidor.get('/', async (req, resp)=>{
-  resp.sendFile('index.html', {root: '.'});
+  //resp.sendFile('index.html', {root: '.'});
+  return resp.json({teste: 'ok'});
 });
 
-servidor.get('/googlec36f80c6f63a5f05.html', async (req, resp)=>{
-  resp.sendFile('googlec36f80c6f63a5f05.html', {root: '.'});
-});
+//servidor.get('/googlec36f80c6f63a5f05.html', async (req, resp)=>{
+//  resp.sendFile('googlec36f80c6f63a5f05.html', {root: '.'});
+//});
 
 servidor.post('/mysql', async (req, resp) => {
   const con = mysql.createConnection({
@@ -39,7 +40,8 @@ servidor.post('/mysql', async (req, resp) => {
   });
   console.log(desconectado);
   if(desconectado)
-    return resp.sendFile('erro.html', {root: '.'});
+    //return resp.sendFile('erro.html', {root: '.'});
+    return resp.json({teste: 'erro'});
   
   //con.connect(async (erro) => {
   //  if (erro)
@@ -51,7 +53,8 @@ servidor.post('/mysql', async (req, resp) => {
   //});
   //console.log(usuario);
 
-  resp.sendFile('sucesso.html', {root: '.'});
+  //resp.sendFile('sucesso.html', {root: '.'});
+  return resp.json({teste: 'mysql ok'});
 });
 
 servidor.post('/mongodb', async (req, resp) => {
@@ -72,13 +75,15 @@ servidor.post('/mongodb', async (req, resp) => {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } catch(erro) {
     console.log('Erro na conexão com o banco de dados: '+erro);
-    return resp.sendFile('erro.html', {root: '.'});
+    //return resp.sendFile('erro.html', {root: '.'});
+    return resp.json({teste: 'erro'});
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
   }
 
-  resp.sendFile('sucesso.html', {root: '.'});
+  //resp.sendFile('sucesso.html', {root: '.'});
+  return resp.json({teste: 'mongodb ok'});
 });
 
 servidor.get('/usuarios', async (req, resp)=>{

@@ -14,9 +14,24 @@ servidor.use(cors({
 servidor.use(express.urlencoded({extended: false}));
 //servidor.use(express.static('.'));
 
-servidor.get('/', async (req, resp)=>{
+servidor.get('/teste', async (req, resp)=>{
   //resp.sendFile('index.html', {root: '.'});
-  return resp.json({teste: 'ok'});
+  fetch("https://wilsrpg.cyclic.cloud"
+  , {
+    "headers": {
+      "Authorization": `Basic ${btoa('wilsrpg@cyclic:BoraCyclic')}`,
+    },
+    "method": "GET"
+  }
+  )
+  .then(resp=>{
+    console.log(resp);
+    return resp.json({teste: 'ok'});
+  })
+  .catch(erro=>{
+    console.log(erro);
+    return erro.json({teste: 'erro'});
+  });
 });
 
 //servidor.get('/googlec36f80c6f63a5f05.html', async (req, resp)=>{
@@ -41,7 +56,7 @@ servidor.post('/mysql', async (req, resp) => {
   console.log(desconectado);
   if(desconectado)
     //return resp.sendFile('erro.html', {root: '.'});
-    return resp.json({teste: 'erro'});
+    return resp.json({mysql: 'erro'});
   
   //con.connect(async (erro) => {
   //  if (erro)
@@ -54,7 +69,7 @@ servidor.post('/mysql', async (req, resp) => {
   //console.log(usuario);
 
   //resp.sendFile('sucesso.html', {root: '.'});
-  return resp.json({teste: 'mysql ok'});
+  return resp.json({mysql: 'ok'});
 });
 
 servidor.post('/mongodb', async (req, resp) => {
@@ -76,14 +91,14 @@ servidor.post('/mongodb', async (req, resp) => {
   } catch(erro) {
     console.log('Erro na conexão com o banco de dados: '+erro);
     //return resp.sendFile('erro.html', {root: '.'});
-    return resp.json({teste: 'erro'});
+    return resp.json({mongodb: 'erro'});
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
   }
 
   //resp.sendFile('sucesso.html', {root: '.'});
-  return resp.json({teste: 'mongodb ok'});
+  return resp.json({mongodb: 'ok'});
 });
 
 servidor.get('/usuarios', async (req, resp)=>{
